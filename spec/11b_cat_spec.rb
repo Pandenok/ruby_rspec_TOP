@@ -1,22 +1,23 @@
 # frozen_string_literal: true
 
-require_relative '../lib/11_cat'
-require_relative '../spec/11_shared_example_spec'
+require_relative '../lib/11b_cat'
+require_relative '../spec/11a_shared_example_spec'
 
-# rubocop:disable Layout/LineLength
+# The file order to complete this lesson:
 
-# This example has a 'Pet' class with two sub-classes 'Cat' and 'Dog'.
-# There is a spec file for cat & dog (each file begins with '11_').
-
-# In addition, there is a third spec file called '11_shared_example'.
-# This file has two tests that are used in both the cat & dog spec files.
+# 1. Familarize yourself with the three lib/15 files.
+#    - lib/11a_pet.rb is the parent 'Pet' class of 'Cat' and 'Dog'
+#    - lib/11b_cat.rb is a subclass 'Cat'
+#    - lib/11c_dog.rb is a subclass 'Dog'
+# 2. Review the tests in spec/11a_shared_example_spec.rb
+# 3. Complete either spec/11b_cat_spec.rb or spec/11c_dog_spec.rb
 
 describe Cat do
   subject(:oscar) { described_class.new('Oscar', 'Maine Coon') }
 
-  # Check out the file: 11_shared_examples_spec.rb.
-  # This test references that file's first test in the 'include_examples' line.
-  # The shared_example_spec file has further information.
+  # Before you begin this file, make sure you have read the shared
+  # example file: 11a_shared_examples_spec.rb. This test references
+  # that file's first test in the below 'include_examples' line.
   context 'when Cat is a child class of Pet' do
     include_examples 'base class method name'
   end
@@ -30,13 +31,13 @@ describe Cat do
 end
 
 # ASSIGNMENT - complete either Cat or Dog assignment
-# (see 11_dog_spec.rb for Dog assignment)
+# (see 11c_dog_spec.rb for Dog assignment)
 
 describe Cat do
   # Create a subject with your choice of cat name and optional breed/color.
 
-  # Write a test using the second shared_example to test that cat should
-  # respond to talk ('meow').
+  # Write a test using the second shared_example to test that cat responds to
+  # talk ('meow').
   context '' do
   end
 
@@ -48,5 +49,3 @@ describe Cat do
   xit 'is hiding' do
   end
 end
-
-# rubocop:enable Layout/LineLength

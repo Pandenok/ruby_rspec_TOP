@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
-
 # 'eq' checks for equal VALUE.
 # 'eql' checks for equal VALUE and TYPE.
 # 'equal' checks for OBJECT IDENTITY.
@@ -34,15 +32,21 @@ describe 'differences between eq, eql, equal, and be' do
     context 'eql looks at type & value' do
       it 'is eql to each other' do
         expect(my_car).to eql(your_car)
+      end
+
+      it 'is eql to each other' do
         expect(my_kids_borrow).to eql(your_car)
       end
     end
 
     # Some prefer to use 'be' over 'equal' because it semantically makes sense.
     # expect(first_item).to be(second_item)
-    context 'be and equal cares about object identity' do
+    context 'be and equal care about object identity' do
       it 'is comparing the same car' do
         expect(my_car).to equal(my_kids_borrow)
+      end
+
+      it 'is comparing the same car' do
         expect(my_car).to be(my_kids_borrow)
       end
 
@@ -81,4 +85,3 @@ describe 'equality assignment' do
   xit 'copy_cat is equal to amy' do
   end
 end
-# rubocop:enable Metrics/BlockLength

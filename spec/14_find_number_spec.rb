@@ -2,26 +2,30 @@
 
 require_relative '../lib/14_find_number'
 
-# rubocop:disable Layout/LineLength, Metrics/BlockLength
+# The file order to complete this lesson:
+# 1. Familarize yourself with the initialize method in lib/14_find_number.rb
+# 2. Start reading spec/14_find_number_spec.rb, which will also include
+#    instructions to add methods to lib/14_find_number.rb
 
-# This file is going to focus on test-driven development (TDD). One important
+# This file focuses on test-driven development (TDD). One important
 # TDD technique is using a 'double' for any object outside of the class being
-# tested. A 'double' is a generic ruby object, that stands in for the real
-# object, like a stunt-double.
+# tested. A 'double' is a generic ruby object that stands in for the real
+# object, like a stunt double.
 
 # Doubles are very useful in TDD because you can create test functionality that
-# is not coded yet.
+# is not coded yet with them.
 
-# In this example, we will be testing the class 'FindNumber'. Look at the
+# In this lesson, we will be testing the class 'FindNumber'. Look at the
 # lib/14_find_number.rb file. An instance of 'FindNumber' is initialized with
-# a 'RandomNumber' object.
+# a 'RandomNumber' object (unless a third argument is given to the initialize
+# method).
 
 # The 'RandomNumber' class has not been written, so we will use a double for it
 # in these tests.
 # https://relishapp.com/rspec/rspec-mocks/v/3-9/docs/basics/test-doubles
 
 # Learning about doubles can be very confusing, because many resources use
-# doubles/mocks/stubs interchangably. If you want to dig a little deeper,
+# doubles/mocks/stubs interchangeably. If you want to dig a little deeper,
 # here are a few additional resources to check out:
 # https://www.tutorialspoint.com/rspec/rspec_test_doubles.htm
 # https://www.codewithjason.com/rspec-mocks-stubs-plain-english/
@@ -31,7 +35,7 @@ describe FindNumber do
 
   describe '#initialize' do
     # Doubles are strict, which means you must specify (allow) any messages
-    # that it can receive. If the double receives a message that has not been
+    # that they can receive. If a double receives a message that has not been
     # allowed, it will trigger an error.
 
     # This first example creates the double, then allows specific methods.
@@ -39,10 +43,10 @@ describe FindNumber do
       let(:random_number) { double('random_number') }
       subject(:game) { described_class.new(0, 9, random_number) }
 
-      context 'when random_answer.value is 8' do
+      context 'when random_number is 8' do
         it 'returns 8' do
           allow(random_number).to receive(:value).and_return(8)
-          solution = game.answer.value
+          solution = game.answer
           expect(solution).to eq(8)
         end
       end
@@ -56,9 +60,9 @@ describe FindNumber do
       let(:random_number) { double('random_number', value: 3) }
       subject(:game) { described_class.new(0, 9, random_number) }
 
-      context 'when random_answer.value is 3' do
+      context 'when random_number is 3' do
         it 'returns 3' do
-          solution = game.answer.value
+          solution = game.answer
           expect(solution).to eq(3)
         end
       end
@@ -68,9 +72,9 @@ describe FindNumber do
     # method names to subject.
     context 'when adding method names to subject for multiple tests' do
       let(:random_number) { double('random_number', value: 5) }
-      subject(:game_solution) { described_class.new(0, 9, random_number).answer.value }
+      subject(:game_solution) { described_class.new(0, 9, random_number).answer }
 
-      context 'when random_answer.value is 5' do
+      context 'when random_number is 5' do
         it 'returns 5' do
           expect(game_solution).to eq(5)
         end
@@ -80,7 +84,7 @@ describe FindNumber do
 end
 
 # ASSIGNMENT
-# For this assignment you will be doing TDD for 3 methods - #make_guess,
+# For this assignment you will be doing TDD for 3 methods: #make_guess,
 # #game_over?, and #update_range.
 
 # After you have some experience using TDD, you can use the typical
@@ -89,19 +93,19 @@ end
 
 # Since this is probably your first experience with TDD, let's extend the
 # workflow to include a few more steps:
-# 1. Read & understand the requirement for one method at a time.
-# 2. Write one test for that method that you think will pass.
-# 3. Write the method that fulfills the requirement.
-# 4. Run the test that you wrote. If it doesn't pass, re-do steps 1-3.
+# 1. Read & understand the requirement for one method only.
+# 2. Write one test for that method that you think it will pass.
+# 3. Write the method to fulfill the requirement.
+# 4. Run the test that you wrote. If it doesn't pass, redo steps 1-3.
 # 5. When your first test is passing, write the additional tests.
-# 6. Run all of the tests. If they all don't pass, re-do steps 3-5.
-# 7. Optional: Refactor your code and/or tests, with all tests passing.
+# 6. Run all of the tests. If any do not pass, redo steps 3-5.
+# 7. Optional: Refactor your code and/or tests, keeping all tests passing.
 
 describe FindNumber do
   # ASSIGNMENT: METHOD #1
 
   # The basic idea of 'FindNumber' is to program a computer to guess a
-  # random_number, using binary search. Remember the binary search video
+  # random_number using binary search. Remember the binary search video
   # that you watched in the Computer Science section:
   # https://www.youtube.com/watch?v=T98PIp4omUA
 
@@ -109,17 +113,20 @@ describe FindNumber do
 
   describe '#make_guess' do
     # Create a random_number double & allow it to receive 'value' and return any
-    # number between 0 and 9 in one of the two ways explained above.
+    # number between 0 and 9, in one of the two ways explained above.
 
     subject(:game) { described_class.new(0, 9, random_number) }
 
+    # Before you write the #make_guess method:
     # Write a test that would expect #make_guess to return the average of
-    # the min and max values (rounded down).
+    # the min and max values (rounded down). Don't expect this test to be
+    # able to pass as you haven't written #make_guess yet!
     context 'when min is 0 and max is 9' do
     end
 
-    # Write a method in 14_find_number.rb called #make_guess that returns the
-    # average of the min and max values (rounded down).
+    # Now write a method in 14_find_number.rb called #make_guess that returns
+    # the average of the min and max values (rounded down).
+    # You can now run the above test and it should pass.
 
     # Write a test for each of the following contexts:
 
@@ -139,24 +146,25 @@ describe FindNumber do
   # ASSIGNMENT: METHOD #2
   describe '#game_over?' do
     # In a long test file, it can be helpful to declare variables in each
-    # describe block, to make the tests more read-able. When creating another
+    # describe block, to make the tests more readable. When creating another
     # instance of the random number and/or subject, use a meaningful name to
     # differentiate between instances.
 
-    # Create a subject and random_number double with a meaningful name.
+    # Create a subject and random_number double with meaningful names.
     # A helpful tip is to combine the purpose of the test and the object.
-    # Like, ending_number & ending_game or completing_random & completing_game.
+    # E.g., ending_number & ending_game or completing_random & completing_game.
 
-    # Allow the double to receive 'value' and return a number from the min-max.
+    # Allow the double to receive 'value' and return a number from 0 to 9.
 
     # Write a test that would expect game to be_game_over when a guess equals
-    # the random_number double's value above.
+    # the random_number double's value above. Remember that this test will not
+    # be able to pass yet because you haven't written the method!
 
     context 'when guess and random_number are equal' do
     end
 
-    # Write a method in 14_find_number.rb called #game_over? that returns true
-    # when a guess equals the value of the random_number.
+    # Write the corresponding method in 14_find_number.rb called #game_over?
+    # that returns true when a guess equals the value of the random_number.
 
     # Write a test that would expect game to NOT be_game_over when a guess does
     # NOT equal the random_number double's value above.
@@ -170,15 +178,15 @@ describe FindNumber do
     let(:updating_number) { double('random_number', value: 8) }
     subject(:updating_game) { described_class.new(0, 9, updating_number) }
 
-    # Write four tests for #update_range that tests the values of min and max.
+    # Write four tests for #update_range that test the values of min and max.
 
     # When the guess is less than the answer:
-    # - min will update to one more than the guess
-    # - max stays the same.
+    # - min updates to one more than the guess
+    # - max stays the same
 
     # When the guess is more than the answer:
     # - min stays the same
-    # - max will update to one less than the guess
+    # - max updates to one less than the guess
 
     # Note: updating_game in each context block starts off with
     # min = 0 and max = 9.
@@ -208,10 +216,10 @@ describe FindNumber do
     # do the following:
 
     # When the guess is less than the answer:
-    # - min will update to one more than the guess
+    # - min updates to one more than the guess
 
     # When the guess is not less than the answer:
-    # - max will update to one less than the guess
+    # - max updates to one less than the guess
 
     # Write a test for any 'edge cases' that you can think of, for example:
 
@@ -224,5 +232,3 @@ describe FindNumber do
     end
   end
 end
-
-# rubocop:enable Layout/LineLength, Metrics/BlockLength

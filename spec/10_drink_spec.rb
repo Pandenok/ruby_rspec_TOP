@@ -1,17 +1,21 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
+# Now that the basics are covered, we are going to use a typical workflow
+# for the rest of the lessons. The class being tested will be located in
+# a different file.
 
-# Now that the basics are covered, we are going to use a typical work-flow.
-# The class being tested will be located in a different file:
-# If you are using VS Code, you can split the screen to see both files.
-# (view menu -> editor layout)
+# The file order to complete this lesson:
+# 1. Familarize yourself with the class in lib/10_drink.rb
+# 2. Complete spec/10_drink_spec.rb
+
+# If you are using VS Code, you can split the screen to see both files at
+# the same time (view menu -> editor layout).
 
 require_relative '../lib/10_drink'
 
 describe Drink do
   describe '#initialize' do
-    # The Drink class needs to have an attr_reader for :type and :ounces.
+    # The Drink class needs to have an attr_reader for both :type and :ounces.
     context 'when using default initialization' do
       subject(:default_drink) { Drink.new }
 
@@ -46,11 +50,11 @@ describe Drink do
       end
     end
 
-    # Use 'described_class' instead of the class name, to limit the code that
-    # will need to be changed if/when it changes. For example, as applications
-    # develop, class names are subject to change. Drink could be changed to
-    # 'Beverage'. If that change was made, then every time that the word
-    # 'Drink' was used would have to be changed to 'Beverage'.
+    # Use 'described_class' instead of the class name to limit the code that
+    # needs to be changed, if/when it changes. For example, as applications
+    # develop, class names are subject to change, so that Drink could be
+    # changed to 'Beverage'. If that change were made, every time the word
+    # 'Drink' was used, it would have to be changed to 'Beverage'.
 
     context 'when limiting future code changes' do
       subject(:my_drink) { described_class.new('juice') }
@@ -119,5 +123,3 @@ describe Drink do
     end
   end
 end
-
-# rubocop:enable Metrics/BlockLength

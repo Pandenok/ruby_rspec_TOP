@@ -2,23 +2,27 @@
 
 require_relative '../lib/13_input_output'
 
-# rubocop:disable Layout/LineLength, Metrics/BlockLength
+# The file order to complete this lesson:
+# 1. Familarize yourself with the two classes in lib/13_input_output.rb
+# 2. Complete spec/13_input_output_spec.rb
 
-# Ruby code that was written before you learned how to use rpsec, may be nearly
-# impossible to test. For example, in the 13_input_output file, there are two
-# identical games - ImpossibleToTestGame and NumberGame. Take a look at both games
-# and look for the differences that may make it easier or harder to test.
+# Ruby code that was written before you learned how to use RSpec may be nearly
+# impossible to test. For example, in the lib/13_input_output file, there are
+# two identical games: ImpossibleToTestGame and NumberGame. Take a look at each
+# game and look for differences that may make one easier or harder to test
+# than the other.
 
-# One key difference is that NumberGame has smaller, isolated methods.
+# One key difference between the two is that NumberGame has smaller,
+# isolated methods.
 
 # Small and isolated methods that only do one thing are easier to test.
 # Long methods are like a run-on sentence that should have been divided into 2 or 3 different sentences so that everything could be clearly understood and in this case if a method does many different things it can be difficult to test.
 
-# Therefore, if you are new to testing, be open to refactoring your previous
-# code to make writing testing easier. As you learn testing, you are also
-# learning how to write better testable methods.
+# So if you are new to testing, be open to refactoring your previous
+# code, to make writing tests easier. As you learn testing, you will also
+# learn how to write better testable methods.
 
-# The tests in this file are going to become longer than previous examples.
+# The tests in this file are longer than those in the previous lessons.
 # To get your bearings, remember to reference the following lines:
 # describe -> Name of the method that is being tested.
 # context ->  Explains the conditions of the test.
@@ -28,23 +32,29 @@ describe NumberGame do
   subject(:game) { described_class.new }
 
   describe '#initialize' do
-    it 'is a number 0 - 9' do
-      solution = game.solution
-      expect(solution).to be >= 0
-      expect(solution).to be < 10
-    end
+    context 'when solution is initialized' do
+      it 'is a number greater than or equal to 0' do
+        solution = game.solution
+        expect(solution).to be >= 0
+      end
 
-    # ASSIGNMENT
-    # Write a similar test as the one above, that uses a custom matcher,
-    # instead of <, >, =.
-    matcher :be_between_zero_and_nine do
-      match { |number| number.between?(0, 9) }
-    end
+      it 'is a number greater than 9' do
+        solution = game.solution
+        expect(solution).to be < 10
+      end
 
-    # remove the 'x' before running this test
-    it 'is a number between 0 and 9' do
-      solution = game.solution
-      expect(solution).to be_between_zero_and_nine
+      # ASSIGNMENT #1
+      # Write a similar test to the one above, that uses a custom matcher
+      # instead of <, >, =.
+      matcher :be_between_zero_and_nine do
+        match { |number| number.between?(0, 9) }
+      end
+
+      # remove the 'x' before running this test
+      it 'is a number between 0 and 9' do
+        solution = game.solution
+        expect(solution).to be_between_zero_and_nine
+      end
     end
   end
 
@@ -57,7 +67,7 @@ describe NumberGame do
       end
     end
 
-    # ASSIGNMENT
+    # ASSIGNMENT #2
     # Write one test for when game.solution does not equal correct_guess?
     context 'when user guess is not correct' do
       # remove the 'x' before running this test
@@ -71,9 +81,10 @@ describe NumberGame do
 
   # The #player_input method is used in the game as an argument passed into the
   # verify_input method. The #player_input method is not tested because it is a
-  # protected method. In addition, it is unneccessary to test methods that only
+  # protected method. In addition, it is unnecessary to test methods that only
   # contain puts and/or gets. However, at the bottom of the answer file is an
-  # example of how to test the #player_input method if it were not protected.
+  # example of how you would test the #player_input method if it were not
+  # protected.
 
   # Since we do not have to test #player_input, let's test #verify_input.
 
@@ -102,7 +113,7 @@ describe NumberGame do
       number_input = '5'
 
       # When using the same 'Arrange' part of a test, you can utilize before
-      # hooks to set-up the test conditions.
+      # hooks to set up the test conditions.
       # https://relishapp.com/rspec/rspec-core/v/2-0/docs/hooks/before-and-after-hooks\
 
       before do
@@ -115,29 +126,31 @@ describe NumberGame do
         # test output.
         allow(game).to receive(:puts)
 
-        # This method starts with the invalid parameter (letter_input = 'g')
+        # This test starts with the invalid parameter (letter_input = 'g').
         verified_input = game.verify_input(letter_input)
 
-        # However, the result of 'verified_input' is the valid parameter.
-        # (number_input = '5')
+        # The result of 'verified_input' is the valid parameter, because
+        # of the player_input stub in the before hook (number_input = '5').
         expect(verified_input).to eq('5')
       end
 
       it 'displays error message once' do
         # Due to the loop, we can test that the game received :puts with the
-        # error message one time. In order to do this, we will need to move
-        # 'Assert' before 'Act', which is an example of mocking.
-        # http://testing-for-beginners.rubymonstas.org/test_doubles.html
+        # error message one time. In order to test if this method is called,
+        # we use a message expectation.
+        # https://relishapp.com/rspec/rspec-mocks/docs
+
+        # To set a message expectation, move 'Assert' before 'Act'.
         expect(game).to receive(:puts).once.with('Input error!')
         game.verify_input(letter_input)
       end
     end
 
-    # ASSIGNMENT
+    # ASSIGNMENT #3
     context 'when given invalid input twice before valid input' do
       letter_input = 'h'
       number_input = '3'
-      # Create another invalid input (anything except a digit between 0-9).
+      # Create another invalid input (anything except a digit between 0 and 9).
       symbol_input = '@'
 
       before do
@@ -148,12 +161,15 @@ describe NumberGame do
         allow(game).to receive(:player_input).and_return(symbol_input, number_input)
       end
 
+      # remove the 'x' before running this test
       it 'loops twice until it receives valid input' do
+        # Creating a stub method for :puts is optional
         allow(game).to receive(:puts).twice
         verified_input = game.verify_input(letter_input)
         expect(verified_input).to eq('3')
       end
 
+      # remove the 'x' before running this test
       it 'displays error message twice' do
         expect(game).to receive(:puts).twice.with('Input error!')
         game.verify_input(letter_input)
@@ -179,7 +195,7 @@ describe NumberGame do
       end
     end
 
-    # ASSIGNMENT
+    # ASSIGNMENT #4
     context 'when count is 2-3' do
       # remove the 'x' before running this test
       it 'outputs correct phrase' do
@@ -190,7 +206,7 @@ describe NumberGame do
       end
     end
 
-    # ASSIGNMENT
+    # ASSIGNMENT #5
     context 'when count is 4 and over' do
       # remove the 'x' before running this test
       it 'outputs correct phrase' do
@@ -221,4 +237,3 @@ describe NumberGame do
   #   end
   # end
 end
-# rubocop:enable Layout/LineLength, Metrics/BlockLength
